@@ -14,35 +14,32 @@ namespace webserver
         {
             try
             {
-                while (true)
-                {
-
+                
                     HttpListener web = new HttpListener();
 
                     web.Prefixes.Add("http://localhost:8080/");
                     Console.WriteLine("Listening..");
                     web.Start();
+                while(web.IsListening)
+                {
 
-                    var context = web.GetContext();
-                    // Console.WriteLine(context);
-
-                    var response = context.Response;
-
+                    HttpListenerContext context = web.GetContext();
+                    HttpListenerResponse response = context.Response;
                     string filename = context.Request.RawUrl;
+                   
                     filename = filename.Remove(0, 1);
-
-
                     byte[] bytearray = StreamFile(filename);
                     var buffer = bytearray;
                     response.ContentLength64 = buffer.Length;
                     var output = response.OutputStream;
                     output.Write(buffer, 0, buffer.Length);
                     //Console.WriteLine(output);
-                    //output.Close();
+                    output.Close();
 
-                    web.Stop();
+                    
                     //Console.ReadKey();
                 }
+                web.Stop();
             }
             catch (Exception e)
             {
