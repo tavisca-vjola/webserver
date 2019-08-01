@@ -14,7 +14,9 @@ namespace webserver
         {
             try
             {
-              
+                while (true)
+                {
+
                     HttpListener web = new HttpListener();
 
                     web.Prefixes.Add("http://localhost:8080/");
@@ -40,18 +42,18 @@ namespace webserver
 
                     web.Stop();
                     //Console.ReadKey();
-              }
-            catch(Exception e)
+                }
+            }
+            catch (Exception e)
             {
                 Console.Write(e.ToString());
             }
         }
         public  static byte[] StreamFile(string filename)
         {
-            FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+           
             byte[] ImageData = System.IO.File.ReadAllBytes(filename);
-            fs.Read(ImageData, 0, System.Convert.ToInt32(fs.Length));
-            fs.Close();
+           
             return ImageData;
         }
 
